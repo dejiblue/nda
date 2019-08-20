@@ -21,7 +21,7 @@ window.Vue = require('vue');
 
 //Vue.component('example-component', require('./components/ExampleComponent.vue').default);
 
-//Vue.component('import-form', require('./components/ImportForm.vue'));
+Vue.component('import-form', require('./components/ImportForm.vue'));
 
 /**
  * Next, we will create a fresh Vue application instance and attach it to

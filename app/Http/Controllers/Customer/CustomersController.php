@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Exception;
 use Illuminate\Support\Facades\Mail;
+use Jenssegers\Agent\Agent;
 
 class CustomersController extends Controller
 {
@@ -14,11 +15,13 @@ class CustomersController extends Controller
     private $page_title;
     private $mailchimp;
     private $listId;
+    private $agent;
 
-    public function __construct(\Mailchimp $mailchimp)
+    public function __construct(\Mailchimp $mailchimp, Agent $agent)
     {
         $this->mailchimp = $mailchimp;
         $this->listId = env('MAILCHIMP_LIST_ID');
+        $this->agent = $agent;
         $this->page_title = __('Opt in');
     }
 
@@ -51,8 +54,8 @@ class CustomersController extends Controller
         try{
             $rec = Contact::updateOrCreate(['email' => $request->email],
                 [['first_name' => $request->first_name,'last_name' => $request->last_name,'province' => $request->province,
-                    'mobile' => $request->mobile,'opt_in' => $request->opt_in,'ip_address' => $request->ip_address,
-                    'user_agent' => $request->mobile
+                    'mobile' => $request->mobile,'opt_in' => $request->opt_in,'ip_address' => request()->ip(),
+                    'user_agent' => $this->agent->platform().' '.$this->agent->browser()
                 ]]);
             if($rec){
                 // Queue an email to be sent to the user

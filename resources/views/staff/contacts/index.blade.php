@@ -1,6 +1,9 @@
 @extends('layouts.app')
 
 @section('content')
+    <div id="app">
+        <import-form></import-form>
+    </div>
     <div class="container">
         <div id="importSection" class="row justify-content-center">
             <div class="col-md-8">
